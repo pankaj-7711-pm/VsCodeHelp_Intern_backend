@@ -1,5 +1,5 @@
 import express from "express";
-import { bookAppointmentController, verifyController } from "../controller/docController.js";
+import { bookAppointmentController, sendOtpController, verifyController } from "../controller/docController.js";
 
 //router object
 const router = express.Router()
@@ -8,5 +8,7 @@ const router = express.Router()
 router.post('/register', bookAppointmentController);
 
 router.post("/verify", verifyController);
+
+router.post("/sendotp", sendOtpController);
 
 export default router;

@@ -1,14 +1,21 @@
 import { json } from "express";
 import bookModel from "../models/bookModel.js";
+import nodemailer from "nodemailer";
 
 export const bookAppointmentController = async (req, res) => {
   try {
-    const { email, date, time, month } = req.body;
+    const { email, date, time, month, otp, rotp } = req.body;
+    if (otp != rotp) {
+      res.send({
+        success: false,
+        message: "wrong otp",
+      });
+    }
     const newBooking = new bookModel({
       email,
       date,
       time,
-      month
+      month,
     });
     await newBooking.save();
     res.status(201).send({
@@ -50,5 +57,34 @@ export const verifyController = async (req, res) => {
       message: "Error in Verifying",
       error,
     });
+  }
+};
+
+export const sendOtpController = async (req, res) => {
+  const { email } = req.body;
+  const temp = Math.floor(1000 + Math.random() * 9000);
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "pankajmandalplt58@gmail.com",
+      pass: "fwyuiqalvvvbvokz",
+    },
+  });
+  const mailOptions = {
+    from: "pankajmandalplt58@gmail.com",
+    to: email,
+    subject: "Welcome to Booking App",
+    text: `Your OTP is ${temp}`,
+  };
+  try {
+    const result = await transporter.sendMail(mailOptions);
+    console.log("Eamil sent successfully");
+    res.send({
+      success: true,
+      message: "Otp generated Successfully",
+      temp,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
