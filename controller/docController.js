@@ -66,8 +66,8 @@ export const sendOtpController = async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "pankajmandalplt58@gmail.com",
-      pass: "fwyuiqalvvvbvokz",
+      user: process.env.MAIL_M,
+      pass: process.env.PASS,
     },
   });
   const mailOptions = {
