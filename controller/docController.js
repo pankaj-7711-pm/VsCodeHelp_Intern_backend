@@ -1,6 +1,9 @@
 import { json } from "express";
 import bookModel from "../models/bookModel.js";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const bookAppointmentController = async (req, res) => {
   try {
